@@ -79,11 +79,11 @@ export interface ItemFilters {
   trade: {
     offline: boolean;
     onlineInLeague: boolean;
+    listingType: "any" | "online" | "onlineleague" | "merchant";
     listed: string | undefined;
     currency: string | undefined;
     league: string;
     collapseListings: "api" | "app";
-    currencyRatio: number;
   };
   tempRuneStorage?: StatFilter[];
 }

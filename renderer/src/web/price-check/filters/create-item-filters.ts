@@ -6,6 +6,7 @@ import { BaseType, ITEM_BY_REF } from "@/assets/data";
 import { CATEGORY_TO_TRADE_ID } from "../trade/pathofexile-trade";
 import { PriceCheckWidget } from "@/web/overlay/widgets";
 import { isArmourOrWeaponOrCaster } from "@/parser/Parser";
+import { ARMOUR, WEAPON } from "@/parser/meta";
 
 export const SPECIAL_SUPPORT_GEM = [
   "Empower Support",
@@ -13,7 +14,12 @@ export const SPECIAL_SUPPORT_GEM = [
   "Enhance Support",
 ];
 
-export const CURRENCY_RATIO = 300;
+const CATEGORIES_WITH_USEFUL_QUALITY = new Set([
+  ItemCategory.Flask,
+  ItemCategory.Tincture,
+  ...WEAPON,
+  ...ARMOUR,
+]);
 
 interface CreateOptions {
   league: string;
@@ -23,7 +29,6 @@ interface CreateOptions {
   exact: boolean;
   useEn: boolean;
   autoFillEmptyRuneSockets: PriceCheckWidget["autoFillEmptyRuneSockets"];
-  currencyRatio: number | undefined;
 }
 
 export function createFilters(
@@ -35,16 +40,20 @@ export function createFilters(
     trade: {
       offline: false,
       onlineInLeague: false,
+      // FIXME: Change to merchant/instantBuyout when ready
+      listingType: "online",
       listed: undefined,
       currency: opts.currency,
       league: opts.league,
       collapseListings: opts.collapseListings,
-      currencyRatio: opts.currencyRatio ?? CURRENCY_RATIO,
     },
   };
 
   if (item.category === ItemCategory.Gem) {
     return createGemFilters(item, filters, opts);
+  }
+  if (item.category === ItemCategory.UncutGem) {
+    return createUncutGemFilters(item, filters, opts);
   }
   if (item.category === ItemCategory.CapturedBeast) {
     filters.searchExact = {
@@ -209,10 +218,7 @@ export function createFilters(
   }
 
   if (item.quality && item.quality >= 20) {
-    if (
-      item.category === ItemCategory.Flask ||
-      item.category === ItemCategory.Tincture
-    ) {
+    if (item.category && CATEGORIES_WITH_USEFUL_QUALITY.has(item.category)) {
       filters.quality = {
         value: item.quality,
         disabled: item.quality <= 20,
@@ -241,15 +247,12 @@ export function createFilters(
         disabled: item.runeSockets.current <= item.runeSockets.normal,
       };
     }
-    const type = isArmourOrWeaponOrCaster(item.category);
-    if (
-      item.runeSockets.empty > 0 &&
-      item.rarity !== ItemRarity.Unique &&
-      (type === "armour" || type === "weapon")
-    ) {
+    if (item.runeSockets.empty > 0 && item.rarity !== ItemRarity.Unique) {
+      const type = isArmourOrWeaponOrCaster(item.category);
       if (
         opts.autoFillEmptyRuneSockets &&
-        (item.rarity === ItemRarity.Magic || item.rarity === ItemRarity.Rare)
+        (item.rarity === ItemRarity.Magic || item.rarity === ItemRarity.Rare) &&
+        (type === "armour" || type === "weapon")
       ) {
         filters.itemEditorSelection = {
           disabled: false,
@@ -532,6 +535,30 @@ function createGemFilters(
     value: item.gemLevel!,
     disabled: item.gemLevel! < 19,
   };
+
+  return filters;
+}
+
+export function createUncutGemFilters(
+  item: ParsedItem,
+  filters: ItemFilters,
+  opts: CreateOptions,
+) {
+  const normalGem = ITEM_BY_REF("ITEM", item.info.refName)![0];
+  filters.searchExact = {
+    baseType: item.info.name,
+    baseTypeTrade: t(opts, normalGem),
+  };
+  const range =
+    item.gemLevel! < 18 && item.info.refName !== "Uncut Support Gem" ? 1 : 0;
+
+  filters.gemLevel = {
+    value: item.gemLevel! - range,
+    disabled: false,
+  };
+  if (range) {
+    filters.gemLevel.max = item.gemLevel! + range;
+  }
 
   return filters;
 }

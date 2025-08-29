@@ -29,6 +29,7 @@ import { ModifierType } from "@/parser/modifiers";
 import { Cache } from "./Cache";
 import { filterInPseudo } from "../filters/pseudo";
 import { parseAffixStrings } from "@/parser/Parser";
+import { rand } from "@vueuse/core";
 
 export const CATEGORY_TO_TRADE_ID = new Map([
   [ItemCategory.Map, "map"],
@@ -285,8 +286,10 @@ export interface PricingResult {
   relativeDate: string;
   priceAmount: number;
   priceCurrency: string;
+  priceCurrencyRank?: number;
   isMine: boolean;
   hasNote: boolean;
+  isMerchant: boolean;
   accountName: string;
   accountStatus: "offline" | "online" | "afk";
   ign: string;
@@ -302,11 +305,11 @@ export function createTradeRequest(
   const body: TradeRequest = {
     query: {
       status: {
-        option: filters.trade.offline
-          ? "any"
-          : filters.trade.onlineInLeague
-            ? "onlineleague"
-            : "online",
+        option:
+          filters.trade.listingType === "merchant"
+            ? // FIXME: Set to correct account status here
+              "online"
+            : filters.trade.listingType,
       },
       stats: [{ type: "and", filters: [] }],
       filters: {},
@@ -316,6 +319,11 @@ export function createTradeRequest(
     },
   };
   const { query } = body;
+
+  if (filters.trade.listingType === "merchant") {
+    // FIXME: actually do something
+    console.log("do something cause merchant");
+  }
 
   if (filters.trade.currency) {
     propSet(
@@ -436,6 +444,13 @@ export function createTradeRequest(
       "misc_filters.filters.gem_level.min",
       filters.gemLevel.value,
     );
+    if (filters.gemLevel.max) {
+      propSet(
+        query.filters,
+        "misc_filters.filters.gem_level.max",
+        filters.gemLevel.max,
+      );
+    }
   }
 
   if (filters.socketNumber && !filters.socketNumber.disabled) {
@@ -994,6 +1009,13 @@ export async function requestResults(
       pseudoMods,
       extended,
     };
+
+    let priceCurrencyRank: PricingResult["priceCurrencyRank"];
+    // FIXME: Find a way to determine the price rank
+    if (rand(0, 2) === 0) {
+      priceCurrencyRank = rand(0, 2) ? 3 : 2;
+    }
+
     return {
       id: result.id,
       itemLevel:
@@ -1012,8 +1034,11 @@ export async function requestResults(
         }) ?? "",
       priceAmount: result.listing.price?.amount ?? 0,
       priceCurrency: result.listing.price?.currency ?? "no price",
+      priceCurrencyRank,
       hasNote: result.item.note != null,
       isMine: result.listing.account.name === opts.accountName,
+      // FIXME: actually calc this
+      isMerchant: rand(0, 2) !== 0,
       ign: result.listing.account.lastCharacterName,
       accountName: result.listing.account.name,
       accountStatus: result.listing.account.online

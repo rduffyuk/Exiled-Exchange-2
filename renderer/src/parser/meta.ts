@@ -51,6 +51,7 @@ export enum ItemCategory {
   SkillGem = "Skill Gem",
   SupportGem = "Support Gem",
   MetaGem = "Meta Gem",
+  UncutGem = "UncutSkillGem",
   Focus = "Focus",
   Waystone = "Waystone",
   Relic = "Relic",
@@ -68,7 +69,6 @@ export const WEAPON_ONE_HANDED_MELEE = new Set([
   ItemCategory.Claw,
   ItemCategory.Dagger,
   ItemCategory.RuneDagger,
-  // TODO: confirm that these are actually melee weapons
   ItemCategory.Spear,
   ItemCategory.Flail,
 ]);

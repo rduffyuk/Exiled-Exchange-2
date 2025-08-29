@@ -1,4 +1,4 @@
-import type { ItemCategory } from "@/parser";
+import { ItemCategory } from "@/parser";
 
 export interface StatMatcher {
   string: string;
@@ -96,13 +96,12 @@ export interface BaseType {
     ev?: [min: number, max: number];
     es?: [min: number, max: number];
   };
-  rune?: {
-    [category: string]: {
-      string: string;
-      values: number[];
-      tradeId?: string[];
-    };
-  };
+  rune?: Array<{
+    categories: ItemCategory[];
+    string: string;
+    values: number[];
+    tradeId?: string[];
+  }>;
   tags: string[];
 }
 
@@ -277,10 +276,14 @@ export interface RuneData {
   baseStat: string;
   values: number[];
   id: string;
-  type: string;
+  categories: ItemCategory[];
   icon: string;
 }
-
+/**
+ * Key for each rune, Iron, Lesser Rebirth, Soul core of xx
+ *
+ * Value is each option that the value could be for, ie stat for armour or weapon.
+ */
 export interface RuneDataByRune {
   [rune: string]: RuneData[];
 }
@@ -290,7 +293,7 @@ export interface RuneDataByTradeId {
     baseStat: string;
     values: number[];
     id: string;
-    type: string;
+    categories: ItemCategory[];
     icon: string;
   }>;
 }

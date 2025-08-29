@@ -8,7 +8,7 @@
     <td class="px-2 whitespace-nowrap">
       <span
         :class="{
-          'line-through': result.priceCurrency === 'chaos',
+          'line-through': false,
         }"
         >{{ result.priceAmount }} {{ result.priceCurrency }}</span
       >
@@ -24,21 +24,40 @@
     <td v-if="itemLevel" class="px-2 whitespace-nowrap text-right">
       {{ result.itemLevel }}
     </td>
-    <td v-if="item.category === 'Gem'" class="pl-2 whitespace-nowrap">
+    <td
+      v-if="
+        item.category === ItemCategory.Gem ||
+        item.category === ItemCategory.UncutGem
+      "
+      class="pl-2 whitespace-nowrap"
+    >
       {{ result.level }}
     </td>
-    <td v-if="item.category === 'Gem'" class="pl-2 whitespace-nowrap">
+    <td
+      v-if="item.category === ItemCategory.Gem"
+      class="pl-2 whitespace-nowrap"
+    >
       {{ result.gemSockets }}
     </td>
     <td
-      v-if="quality || item.category === 'Gem'"
+      v-if="quality || item.category === ItemCategory.Gem"
       class="px-2 whitespace-nowrap text-blue-400 text-right"
     >
       {{ result.quality }}
     </td>
     <td class="pr-2 pl-4 whitespace-nowrap">
       <div class="inline-flex items-center">
-        <div class="account-status" :class="result.accountStatus"></div>
+        <!-- FIXME: Change to merchant to be merchant/instantBuyout -->
+        <div
+          class="account-status"
+          :class="
+            result.isMerchant
+              ? 'merchant'
+              : result.accountStatus === 'online'
+                ? 'merchant'
+                : result.accountStatus
+          "
+        ></div>
         <div class="ml-1 font-sans text-xs">
           {{ result.relativeDate }}
         </div>
@@ -84,6 +103,7 @@ import tippy, { Instance } from "tippy.js";
 import "tippy.js/dist/tippy.css";
 import "tippy.js/themes/light.css";
 import { AppConfig } from "@/web/Config";
+import { ItemCategory } from "@/parser";
 
 export default defineComponent({
   name: "TradeItem",
@@ -186,6 +206,7 @@ export default defineComponent({
       target,
       isHovered,
       isShiftPressed,
+      ItemCategory,
     };
   },
 });

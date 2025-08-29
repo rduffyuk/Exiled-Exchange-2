@@ -15,6 +15,19 @@ const EMOTIONS = [
   "Distilled Isolation",
 ];
 
+// [
+//   "Diluted Liquid Ire",
+//   "Diluted Liquid Guilt",
+//   "Diluted Liquid Greed",
+//   "Liquid Paranoia",
+//   "Liquid Envy",
+//   "Liquid Disgust",
+//   "Liquid Despair",
+//   "Concentrated Liquid Fear",
+//   "Concentrated Liquid Suffering",
+//   "Concentrated Liquid Isolation",
+// ];
+
 export function decodeOils(calc: StatCalculated): string[] | undefined {
   if (calc.type !== ModifierType.Enchant) return;
 
@@ -50,8 +63,10 @@ export function applyAnointmentRules(filters: StatFilter[], item: ParsedItem) {
   } else if (!item.isCorrupted && !item.isMirrored) {
     const oils = anointment.oils!;
     if (
-      !oils.includes("Distilled Isolation") &&
-      !oils.includes("Distilled Suffering")
+      !(
+        oils.includes("Concentrated Liquid Isolation") ||
+        oils.includes("Concentrated Liquid Suffering")
+      )
     ) {
       anointment.hidden = "filters.hide_anointment";
       anointment.disabled = true;
