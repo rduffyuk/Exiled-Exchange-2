@@ -255,3 +255,40 @@ For Linux-specific issues:
 ---
 
 *Note: This guide is for Ubuntu/Debian-based distributions. Other distributions may require slight modifications to package installation commands.*
+## Linux Shortcuts Troubleshooting (Issue #513)
+
+If keyboard shortcuts (Alt+D, Alt+W, etc.) don't work on Linux:
+
+### Solution 1: Permissions Fix
+```bash
+# Grant input permissions
+sudo usermod -a -G input $USER
+sudo chmod +r /dev/input/event*
+# Logout and login again
+```
+
+### Solution 2: X11 Environment
+```bash
+# Ensure X11 environment is properly set
+export DISPLAY=:0
+# Then restart the application
+./auto-update.sh stop
+./auto-update.sh run
+```
+
+### Solution 3: Alternative Launch
+```bash
+# Run with additional X11 permissions
+xhost +local:
+./auto-update.sh run
+```
+
+### Solution 4: Wayland Compatibility
+```bash
+# For Wayland users, force X11 mode
+export GDK_BACKEND=x11
+export QT_QPA_PLATFORM=xcb
+./auto-update.sh run
+```
+
+If shortcuts still don't work, the issue may be related to system security policies or desktop environment conflicts.
