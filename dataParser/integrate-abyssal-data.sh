@@ -44,9 +44,18 @@ update_processing() {
     log_message "Updating data processing pipeline..."
     
     # Run the standard export process
-    if [ -f "$SCRIPT_DIR/export-data.sh" ]; then
-        bash "$SCRIPT_DIR/export-data.sh"
+    if [ -x "$SCRIPT_DIR/export-data.sh" ]; then
+        "$SCRIPT_DIR/export-data.sh"
         log_message "Data export completed"
+    elif [ -f "$SCRIPT_DIR/export-data.sh" ]; then
+        log_message "Warning: export-data.sh found but not executable, attempting to make executable..."
+        chmod +x "$SCRIPT_DIR/export-data.sh"
+        if [ -x "$SCRIPT_DIR/export-data.sh" ]; then
+            "$SCRIPT_DIR/export-data.sh"
+            log_message "Data export completed"
+        else
+            log_message "Error: Could not make export-data.sh executable"
+        fi
     else
         log_message "Warning: export-data.sh not found, manual export required"
     fi

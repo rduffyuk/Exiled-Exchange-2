@@ -25,7 +25,11 @@ fix_missing_items() {
     echo "# ================================" >> "$MAIN_DATA"
     
     # Append missing items data
-    grep -v "^#" "$FIXES_DATA" | grep -v "^$" >> "$MAIN_DATA"
+    if [[ -f "$FIXES_DATA" && -s "$FIXES_DATA" ]]; then
+        grep -v "^#" "$FIXES_DATA" | grep -v "^$" >> "$MAIN_DATA"
+    else
+        log_message "No missing items data to append (file not found or empty: $FIXES_DATA)"
+    fi
     
     log_message "Missing items fix applied successfully"
 }
