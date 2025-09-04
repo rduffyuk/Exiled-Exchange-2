@@ -1,4 +1,5 @@
 #!/bin/bash
+set -euo pipefail
 
 # Exiled Exchange 2 Auto-Update Script
 # This script checks for updates, rebuilds if needed, and runs the app
@@ -7,7 +8,7 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 cd "$SCRIPT_DIR"
 
 LOG_FILE="$SCRIPT_DIR/auto-update.log"
-APPIMAGE_PATH="$SCRIPT_DIR/main/dist/Exiled Exchange 2-0.11.3.AppImage"
+APPIMAGE_PATH="$(ls -v "$SCRIPT_DIR"/main/dist/Exiled\ Exchange\ 2-*.AppImage 2>/dev/null | tail -n 1)"
 PID_FILE="/tmp/exiled-exchange-2.pid"
 
 # Function to log messages
@@ -33,19 +34,24 @@ build_app() {
     log_message "Building application..."
     
     # Build renderer
-    cd "$SCRIPT_DIR/renderer"
+    cd "$SCRIPT_DIR/renderer" || { log_message "Failed to enter renderer directory"; exit 1; }
     npm install --silent
     npm run make-index-files
     npm run build
     
     # Build main
-    cd "$SCRIPT_DIR/main"
+    cd "$SCRIPT_DIR/main" || { log_message "Failed to enter main directory"; exit 1; }
     npm install --silent
     npm run build
     npm run package
     
     # Make AppImage executable
-    chmod +x "$APPIMAGE_PATH"
+    if [ -f "$APPIMAGE_PATH" ]; then
+        chmod +x "$APPIMAGE_PATH"
+    else
+        log_message "Error: AppImage not found at $APPIMAGE_PATH"
+        exit 1
+    fi
     
     log_message "Build complete"
 }
@@ -54,16 +60,19 @@ build_app() {
 check_and_update() {
     log_message "Checking for updates..."
     
+    # Detect default branch
+    DEFAULT_BRANCH=$(git symbolic-ref refs/remotes/origin/HEAD 2>/dev/null | sed 's@^refs/remotes/origin/@@' || echo "master")
+    
     # Fetch latest changes
     git fetch origin
     
     # Check if we're behind
     LOCAL=$(git rev-parse HEAD)
-    REMOTE=$(git rev-parse origin/master)
+    REMOTE=$(git rev-parse origin/$DEFAULT_BRANCH)
     
     if [ "$LOCAL" != "$REMOTE" ]; then
         log_message "Updates available. Pulling changes..."
-        git pull origin master
+        git pull origin "$DEFAULT_BRANCH"
         
         # Rebuild the application
         build_app
@@ -81,6 +90,12 @@ run_app() {
     
     # Kill any existing instance
     kill_existing
+    
+    # Check if AppImage exists
+    if [ ! -f "$APPIMAGE_PATH" ]; then
+        log_message "Error: AppImage not found at $APPIMAGE_PATH"
+        exit 1
+    fi
     
     # Run the AppImage in background
     "$APPIMAGE_PATH" --no-sandbox &

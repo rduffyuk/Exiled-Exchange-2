@@ -1,4 +1,5 @@
 #!/bin/bash
+set -euo pipefail
 
 # Setup script for Exiled Exchange 2 auto-update
 
