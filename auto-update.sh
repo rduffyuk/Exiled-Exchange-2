@@ -33,7 +33,7 @@ PID_FILE="/tmp/exiled-exchange-2.pid"
 # Security configuration - can be overridden by environment variable
 # Set EXILED_SANDBOX_ENABLED=true to enable Electron sandbox (more secure but may cause issues)
 # Set EXILED_SANDBOX_ENABLED=false to disable Electron sandbox (less secure but more compatible)
-SANDBOX_ENABLED="${EXILED_SANDBOX_ENABLED:-false}"
+SANDBOX_ENABLED="${EXILED_SANDBOX_ENABLED:-true}"
 
 # Cleanup function for graceful shutdown
 cleanup() {
