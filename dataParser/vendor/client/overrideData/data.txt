@@ -532,10 +532,6 @@ Corrupted Blood cannot be inflicted on you
 50% of charges used by Charms granted to your Life Flasks
 
 
-Ingenuity Utility Belt
-20% of Flask Recovery applied Instantly
-(40–80)% increased bonuses gained from Equipped Rings
-
 
 Shavronne's Satchel Fine Belt
 Flasks gain 0.17 charges per Second
@@ -2363,10 +2359,9 @@ Provides protection against curses in next area
 Immune to Curses for one area
 Single Use
 Stack Size: 1
-Ingenuity Utility Belt (CORRECTED)
+Ingenuity Utility Belt
 20% of Flask Recovery applied Instantly
-(40-80)% increased bonuses gained from Equipped Rings
-NOT "reduced effect" - this is INCREASED effect
+(40–80)% increased bonuses gained from Equipped Rings
 Tattered Cloak Feathered Robe
 +(20-30) to maximum Energy Shield
 +(10-15) to Intelligence
