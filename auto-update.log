@@ -20,3 +20,16 @@
 [2025-09-05 00:56:48] Launching: /home/rduffy/Exiled-Exchange-2/main/dist/Exiled Exchange 2-0.11.3.AppImage --no-sandbox
 [2025-09-05 00:56:49] Started with PID: 41720
 [2025-09-05 00:58:24] Killing existing instance (PID: 41720)
+[2025-09-05 01:03:37] Building application...
+[2025-09-05 01:03:37] Installing renderer dependencies...
+[2025-09-05 01:03:43] Installing main dependencies...
+[2025-09-05 01:03:48] AppImage created at: /home/rduffy/Exiled-Exchange-2/main/dist/Exiled Exchange 2-0.12.0.AppImage
+[2025-09-05 01:03:48] Build complete
+[2025-09-05 01:03:48] Starting Exiled Exchange 2...
+[2025-09-05 01:03:48] Running with Electron sandbox enabled (more secure)
+[2025-09-05 01:03:48] Launching: /home/rduffy/Exiled-Exchange-2/main/dist/Exiled Exchange 2-0.12.0.AppImage 
+[2025-09-05 01:03:49] Error: Application failed to start
+[2025-09-05 01:03:54] Starting Exiled Exchange 2...
+[2025-09-05 01:03:54] Running with --no-sandbox flag (less secure, more compatible)
+[2025-09-05 01:03:54] Launching: /home/rduffy/Exiled-Exchange-2/main/dist/Exiled Exchange 2-0.12.0.AppImage --no-sandbox
+[2025-09-05 01:03:55] Started with PID: 43425

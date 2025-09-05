@@ -15,6 +15,7 @@ import { OverlayVisibility } from "./windowing/OverlayVisibility";
 import { GameLogWatcher } from "./host-files/GameLogWatcher";
 import { HttpProxy } from "./proxy";
 import { installExtension, VUEJS_DEVTOOLS } from "electron-devtools-installer";
+import { AIBridgeIPCHandler } from "./ai-bridge/AIBridgeIPC";
 
 if (!app.requestSingleInstanceLock()) {
   app.exit();
@@ -69,6 +70,9 @@ if (process.platform === "darwin") {
       const appUpdater = new AppUpdater(eventPipe);
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const _httpProxy = new HttpProxy(server, logger);
+      // Initialize AI Bridge IPC handlers
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      const _aiBridgeIPC = new AIBridgeIPCHandler();
 
       if (process.env.VITE_DEV_SERVER_URL) {
         try {
@@ -134,6 +138,9 @@ if (process.platform === "darwin") {
     const appUpdater = new AppUpdater(eventPipe);
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const _httpProxy = new HttpProxy(server, logger);
+    // Initialize AI Bridge IPC handlers
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const _aiBridgeIPC = new AIBridgeIPCHandler();
 
     if (process.env.VITE_DEV_SERVER_URL) {
       try {
