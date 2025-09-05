@@ -28,3 +28,12 @@ docs/.vitepress/dist
 docs/.vitepress/cache
 
 *.bin
+
+# AI Integration (Personal Use Only)
+ai-bridge/
+main/src/ai-bridge/
+renderer/src/web/ai-bridge/
+renderer/src/web/price-check/ai-insights/
+renderer/src/web/price-check/price-prediction/ai-enhanced-pricing.ts
+AI_INTEGRATION_GUIDE.md
+PROJECT_DOCUMENTATION.md
