@@ -1,0 +1,39 @@
+version: '3.8'
+
+services:
+  exiled-ai-bridge:
+    build: .
+    container_name: exiled-ai-bridge
+    restart: unless-stopped
+    ports:
+      - "${AI_BRIDGE_PORT:-3001}:3001"
+    environment:
+      - NODE_ENV=${NODE_ENV:-production}
+      - PORT=3001
+      - LIBRECHAT_URL=${LIBRECHAT_URL:-http://host.docker.internal:3080}
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    volumes:
+      - ./logs:/usr/src/app/logs
+      - ./config:/usr/src/app/config:ro
+    networks:
+      - exiled-ai-network
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:3001/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.ai-bridge.rule=Host(`ai-bridge.localhost`)"
+      - "traefik.http.services.ai-bridge.loadbalancer.server.port=3001"
+
+networks:
+  exiled-ai-network:
+    driver: bridge
+    name: exiled-ai-network
+
+volumes:
+  bridge-logs:
+    driver: local

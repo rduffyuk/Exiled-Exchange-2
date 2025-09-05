@@ -1,0 +1,22 @@
+{"level":"info","message":"Exiled AI Bridge running on port 3001","timestamp":"2025-09-05T00:29:42.628Z"}
+{"level":"info","message":"LibreChat URL: http://localhost:3080","timestamp":"2025-09-05T00:29:42.629Z"}
+{"level":"info","message":"Environment: development","timestamp":"2025-09-05T00:29:42.630Z"}
+{"error":"Bad escaped character in JSON at position 29 (line 1 column 30)","level":"error","message":"Unhandled error","stack":"SyntaxError: Bad escaped character in JSON at position 29 (line 1 column 30)\n    at JSON.parse (<anonymous>)\n    at parse (/home/rduffy/Exiled-Exchange-2/ai-bridge/node_modules/body-parser/lib/types/json.js:92:19)\n    at /home/rduffy/Exiled-Exchange-2/ai-bridge/node_modules/body-parser/lib/read.js:128:18\n    at AsyncResource.runInAsyncScope (node:async_hooks:214:14)\n    at invokeCallback (/home/rduffy/Exiled-Exchange-2/ai-bridge/node_modules/raw-body/index.js:238:16)\n    at done (/home/rduffy/Exiled-Exchange-2/ai-bridge/node_modules/raw-body/index.js:227:7)\n    at IncomingMessage.onEnd (/home/rduffy/Exiled-Exchange-2/ai-bridge/node_modules/raw-body/index.js:287:7)\n    at IncomingMessage.emit (node:events:507:28)\n    at endReadableNT (node:internal/streams/readable:1701:12)\n    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)","timestamp":"2025-09-05T00:30:02.466Z"}
+{"level":"info","message":"Processing chat request Hello AI bridge! Can you help me analyze Path of Exile 2 items?","timestamp":"2025-09-05T00:30:10.969Z"}
+{"level":"info","message":"SIGTERM received, shutting down gracefully","timestamp":"2025-09-05T00:32:06.755Z"}
+{"level":"info","message":"Exiled AI Bridge running on port 3001","timestamp":"2025-09-05T00:32:14.589Z"}
+{"level":"info","message":"LibreChat URL: http://localhost:3080","timestamp":"2025-09-05T00:32:14.590Z"}
+{"level":"info","message":"Environment: development","timestamp":"2025-09-05T00:32:14.590Z"}
+{"itemLength":108,"league":"Hardcore","level":"info","message":"Processing price check","timestamp":"2025-09-05T00:32:36.682Z"}
+{"error":"Request failed with status code 400","level":"warn","message":"Official API unavailable, using fallback","timestamp":"2025-09-05T00:32:37.248Z"}
+{"level":"info","message":"Processing chat request Analyze this Path of Exile 2 rare sword: Iron Sword with +50% increased Physical Damage, 10% increas","timestamp":"2025-09-05T00:32:57.489Z"}
+{"level":"info","message":"Exiled AI Bridge running on port 3001","timestamp":"2025-09-05T00:33:30.881Z"}
+{"level":"info","message":"LibreChat URL: http://localhost:3080","timestamp":"2025-09-05T00:33:30.882Z"}
+{"level":"info","message":"Environment: development","timestamp":"2025-09-05T00:33:30.882Z"}
+{"level":"info","message":"Processing chat request Hello! Can you help me analyze Path of Exile 2 items?","timestamp":"2025-09-05T00:33:41.602Z"}
+{"error":"Request failed with status code 401","level":"error","message":"LibreChat request failed","timestamp":"2025-09-05T00:33:41.611Z"}
+{"itemLength":320,"league":"Hardcore","level":"info","message":"Processing price check","timestamp":"2025-09-05T00:34:43.054Z"}
+{"error":"Request failed with status code 400","level":"warn","message":"Official API unavailable, using fallback","timestamp":"2025-09-05T00:34:43.635Z"}
+{"error":"Request failed with status code 401","level":"warn","message":"AI insights unavailable","timestamp":"2025-09-05T00:34:43.638Z"}
+{"currency":"divine","league":"Hardcore","level":"info","message":"Fetching market data","timestamp":"2025-09-05T00:34:43.642Z"}
+{"error":"Request failed with status code 401","level":"warn","message":"Market analysis unavailable","timestamp":"2025-09-05T00:34:43.644Z"}
